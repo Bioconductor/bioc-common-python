@@ -57,8 +57,14 @@ BROKER = {
     "port": int(envSpecificConfigParser.get('Properties', 'stomp.port'))
 }
 logging.info("The following build nodes are enabled: %s.", BUILD_NODES)
-ACTIVEMQ_USER=  envSpecificConfigParser.get('Properties', 'activemq.username') #.rstrip('\n')
-ACTIVEMQ_PASS = envSpecificConfigParser.get('Properties', 'activemq.password') #.rstrip('\n')
+if envSpecificConfigParser.has_option('Properties', 'activemq.username'):
+    ACTIVEMQ_USER = envSpecificConfigParser.get('Properties', 'activemq.username')
+else:
+    ACTIVEMQ_USER = None
+if envSpecificConfigParser.has_option('Properties', 'activemq.password'):
+    ACTIVEMQ_PASS = envSpecificConfigParser.get('Properties', 'activemq.password')
+else:
+    ACTIVEMQ_PASS = None
 
 BIOC_VERSION = globalConfigParser.get('UniversalProperties', 'bbs.bioc.version')
 
