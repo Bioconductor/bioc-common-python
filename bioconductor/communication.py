@@ -17,7 +17,7 @@ import stomp
 from bioconductor.config import ACTIVEMQ_USER
 from bioconductor.config import ACTIVEMQ_PASS
 from bioconductor.config import BROKER
-from bioconductor.config import SPB_ENVIRONMENT
+from bioconductor.config import CONFIG_ENVIRONMENT
          
 
 stompHost = BROKER['host']
@@ -29,7 +29,7 @@ def getOldStompConnection():
             stompHost,stompPort)
         # Connect using the old model
         stompClient = oldStompConstructor(stompHost, stompPort)
-        if (SPB_ENVIRONMENT == "production"):
+        if (CONFIG_ENVIRONMENT == "production"):
             logging.debug("Not attempting authentication")
             stompClient.connect()
         else:
@@ -51,7 +51,7 @@ def getNewStompConnection(listenerName, listenerObject):
         stompClient.set_listener(listenerName, listenerObject)
         stompClient.start()
                 
-        if (SPB_ENVIRONMENT == "production"):
+        if (CONFIG_ENVIRONMENT == "production"):
             logging.debug("Not attempting authentication")
             stompClient.connect()
         else:
