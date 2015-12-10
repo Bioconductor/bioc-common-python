@@ -1,5 +1,4 @@
-# A simple configuration module to reduce duplication.  Settings will be loaded
-# dynamically next.
+# A simple configuration module to reduce duplication.
 
 import os
 import platform
@@ -8,22 +7,50 @@ import ConfigParser
 
 logging.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
-                    level=logging.INFO)
+                    level=logging.DEBUG)
 
 logging.debug("Loading configuration")
 
+P_EXTENSION = '.properties'
+GLOBAL_PROPERTIES_FILE = os.path.join(os.getcwd(), 'bioconductor' + P_EXTENSION)
+
+def readFile(filename):
+    if (os.path.isfile(filename) and os.access(filename, os.R_OK)):
+        return True
+    else:
+        return False
+
+if not readFile(GLOBAL_PROPERTIES_FILE):
+    errMsg = "Global properties file '{filename}' is missing or unreadable.  " \
+    "Can not continue.".format(filename = GLOBAL_PROPERTIES_FILE)
+    logging.error(errMsg)
+    raise Exception(errMsg)
+    
+# Parse and read the file
 globalConfigParser = ConfigParser.RawConfigParser()
-globalConfigParser.read(os.path.join(os.getcwd(),'spb.properties'))
-SPB_ENVIRONMENT = globalConfigParser.get('Environment', 'environment');
+globalConfigParser.read(GLOBAL_PROPERTIES_FILE)
 
+CONFIG_ENVIRONMENT = globalConfigParser.get('Environment', 'environment');
+ENVIRONMENT_PROPERTIES_FILE = os.path.join(os.getcwd(), CONFIG_ENVIRONMENT + P_EXTENSION)
+
+if not readFile(ENVIRONMENT_PROPERTIES_FILE):
+    errMsg = "A properties file '{filename}' is required to configure the environment.  "\
+    "Can not continue.".format(filename = ENVIRONMENT_PROPERTIES_FILE)
+    logging.error(errMsg)
+    raise Exception(errMsg)
+
+logging.debug("Environment is set to: '{env}'.".format(env = CONFIG_ENVIRONMENT))
+
+# Parse and read the environment specific configuration
 envSpecificConfigParser = ConfigParser.RawConfigParser()
-if (SPB_ENVIRONMENT == "production"):
-    logging.debug("Working in production")
-    envSpecificConfigParser.read(os.path.join(os.getcwd(),'production.properties'))
-else:
-    logging.debug("Working in development")
-    envSpecificConfigParser.read(os.path.join(os.getcwd(),'development.properties'))
+envSpecificConfigParser.read(ENVIRONMENT_PROPERTIES_FILE)
 
+# FIXME: Rather than attempting to read the same properties in any environment,
+#           it'd be much better if the config module's constructor (or factory) 
+#           offered a callback mechanism, to load the properties file and then
+#           dispatch to environment specific functionality.
+
+# Only used in the packagebuilder for now (we need to adjust it's properties)
 BUILD_NODES = envSpecificConfigParser.get('Properties', 'builders').split(",")
 BROKER = {
     "host": envSpecificConfigParser.get('Properties', 'stomp.host'),
