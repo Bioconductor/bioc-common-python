@@ -8,7 +8,7 @@ logging.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.INFO)
                     
-logging.debug("The module search path is: \n%s", sys.path)
+logging.trace("The module search path is: \n%s", sys.path)
 
 from stompy import Stomp as oldStompConstructor
 import stomp
