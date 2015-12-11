@@ -9,7 +9,7 @@ logging.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
 
-logging.debug("Loading configuration")
+logging.trace("Loading configuration")
 
 P_EXTENSION = '.properties'
 GLOBAL_PROPERTIES_FILE = os.path.join(os.getcwd(), 'bioconductor' + P_EXTENSION)
