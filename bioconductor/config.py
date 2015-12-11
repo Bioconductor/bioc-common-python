@@ -9,7 +9,7 @@ logging.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
 
-logging.trace("Loading configuration")
+logging.debug("Loading configuration")
 
 P_EXTENSION = '.properties'
 GLOBAL_PROPERTIES_FILE = os.path.join(os.getcwd(), 'bioconductor' + P_EXTENSION)
@@ -39,7 +39,7 @@ if not readFile(ENVIRONMENT_PROPERTIES_FILE):
     logging.error(errMsg)
     raise Exception(errMsg)
 
-logging.debug("Environment is set to: '{env}'.".format(env = CONFIG_ENVIRONMENT))
+logging.info("Environment is set to: '{env}'.".format(env = CONFIG_ENVIRONMENT))
 
 # Parse and read the environment specific configuration
 envSpecificConfigParser = ConfigParser.RawConfigParser()
@@ -105,4 +105,4 @@ HOSTS = {
 }
 
 
-logging.debug("Finished loading configuration.")
+logging.info("Finished loading configuration.")
