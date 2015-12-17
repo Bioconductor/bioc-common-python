@@ -6,11 +6,11 @@ import sys
 
 logging.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
-                    level=logging.INFO)
+                    level=logging.DEBUG)
                     
 logging.debug("The module search path is: \n%s", sys.path)
 
-from stompy import Stomp as oldStompConstructor
+from stompy import Stomp
 import stomp
 
 # Modules created by Bioconductor
@@ -28,7 +28,7 @@ def getOldStompConnection():
         logging.debug("Attempting to open connection to ActiveMQ at '%s:%s'.",
             stompHost,stompPort)
         # Connect using the old model
-        stompClient = oldStompConstructor(stompHost, stompPort)
+        stompClient = Stomp(stompHost, stompPort)
         if (CONFIG_ENVIRONMENT == "production"):
             logging.debug("Not attempting authentication")
             stompClient.connect()
