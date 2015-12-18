@@ -11,6 +11,6 @@ the public.  Those properties live under [Bioconductor/private](https://github.c
 
 Installation
 ------------
-Typically, this module not used by itself.  Instead, it's a PIP dependency of other software.  To include 
+Typically, this module is not used by itself.  Instead, it's a PIP dependency of other software.  To include 
 this as a dependency, create an entry in the PIP file, such as 
 [this one](https://github.com/Bioconductor/spb_history/blob/9a687b1289185d37b40652291a706c3c076b006f/PIP-DEPENDENCIES--spb_history.txt#L1).
