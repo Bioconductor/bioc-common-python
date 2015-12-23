@@ -5,11 +5,12 @@ import platform
 import logging
 import ConfigParser
 
-logging.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)s',
-                    datefmt='%m/%d/%Y %I:%M:%S %p',
-                    level=logging.DEBUG)
+# log.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)s',
+#                     datefmt='%m/%d/%Y %I:%M:%S %p',
+#                     level=log.DEBUG)
 
-logging.debug("Loading configuration")
+log = logging.getLogger("Config")
+log.debug("Loading configuration")
 
 P_EXTENSION = '.properties'
 GLOBAL_PROPERTIES_FILE = os.path.join(os.getcwd(), 'bioconductor' + P_EXTENSION)
@@ -23,7 +24,7 @@ def readFile(filename):
 if not readFile(GLOBAL_PROPERTIES_FILE):
     errMsg = "Global properties file '{filename}' is missing or unreadable.  " \
     "Can not continue.".format(filename = GLOBAL_PROPERTIES_FILE)
-    logging.error(errMsg)
+    log.error(errMsg)
     raise Exception(errMsg)
     
 # Parse and read the file
@@ -36,10 +37,10 @@ ENVIRONMENT_PROPERTIES_FILE = os.path.join(os.getcwd(), CONFIG_ENVIRONMENT + P_E
 if not readFile(ENVIRONMENT_PROPERTIES_FILE):
     errMsg = "A properties file '{filename}' is required to configure the environment.  "\
     "Can not continue.".format(filename = ENVIRONMENT_PROPERTIES_FILE)
-    logging.error(errMsg)
+    log.error(errMsg)
     raise Exception(errMsg)
 
-logging.info("Environment is set to: '{env}'.".format(env = CONFIG_ENVIRONMENT))
+log.info("Environment is set to: '{env}'.".format(env = CONFIG_ENVIRONMENT))
 
 # Parse and read the environment specific configuration
 envSpecificConfigParser = ConfigParser.RawConfigParser()
@@ -56,7 +57,7 @@ BROKER = {
     "host": envSpecificConfigParser.get('Properties', 'stomp.host'),
     "port": int(envSpecificConfigParser.get('Properties', 'stomp.port'))
 }
-logging.info("The following build nodes are enabled: %s.", BUILD_NODES)
+log.info("The following build nodes are enabled: %s.", BUILD_NODES)
 if envSpecificConfigParser.has_option('Properties', 'activemq.username'):
     ACTIVEMQ_USER = envSpecificConfigParser.get('Properties', 'activemq.username')
 else:
@@ -105,4 +106,4 @@ HOSTS = {
 }
 
 
-logging.info("Finished loading configuration.")
+log.info("Finished loading configuration.")
