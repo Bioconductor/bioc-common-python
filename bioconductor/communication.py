@@ -3,13 +3,11 @@ import logging
 import mechanize
 import sys
 
-log = logging.getLogger("Communication")
+log = logging.getLogger("bioconductor")
 
 # log.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)s',
 #                     datefmt='%m/%d/%Y %I:%M:%S %p',
 #                     level=log.DEBUG)
-                    
-log.debug("The module search path is: \n%s", sys.path)
 
 from stompy import Stomp
 import stomp

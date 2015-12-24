@@ -9,7 +9,7 @@ import ConfigParser
 #                     datefmt='%m/%d/%Y %I:%M:%S %p',
 #                     level=log.DEBUG)
 
-log = logging.getLogger("Config")
+log = logging.getLogger("bioconductor")
 log.debug("Loading configuration")
 
 P_EXTENSION = '.properties'
