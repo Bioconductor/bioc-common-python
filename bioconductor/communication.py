@@ -3,7 +3,7 @@ import logging
 import mechanize
 import sys
 
-log = logging.getLogger("bioconductor")
+log = logging.getLogger("bioconductor.common")
 
 # log.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)s',
 #                     datefmt='%m/%d/%Y %I:%M:%S %p',
