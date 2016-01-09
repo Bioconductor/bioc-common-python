@@ -67,6 +67,19 @@ if envSpecificConfigParser.has_option('Properties', 'activemq.password'):
 else:
     ACTIVEMQ_PASS = None
 
+
+## FIXME? Not sure if AWS properties should be 
+## in global properties or env-specific properties.
+## They won't be different between dev and prod, however
+## if we put them in global properties, that's another file
+## that will be 'dirty' in local working copies
+## (until we change the way we handle those files)
+AWS = {
+    "region": envSpecificConfigParser.get('Properties', 'aws.region'),
+    "access_key": envSpecificConfigParser.get('Properties', 'aws.access_key'),
+    "secret_key": envSpecificConfigParser.get('Properties', 'aws.secret_key'),
+}
+
 BIOC_VERSION = globalConfigParser.get('UniversalProperties', 'bbs.bioc.version')
 
 # TODO: Consider a better way to determine this
@@ -94,10 +107,17 @@ ENVIR = {
     'tracker_pass': envSpecificConfigParser.get('Properties', 'tracker.pass')
 }
 
-TOPICS = {
-    "jobs": "/topic/buildjobs",
-    "events": "/topic/builderevents"
-}
+if (CONFIG_ENVIRONMENT == "production"):
+    TOPICS = {
+        "jobs": "buildjobs",
+        "events": "builderevents"
+    }
+elif (CONFIG_ENVIRONMENT == "development"):
+    TOPICS = {
+        "jobs": "buildjobs_dev",
+        "events": "builderevents_dev"
+    }
+
 
 HOSTS = {
     'svn': 'https://hedgehog.fhcrc.org',
