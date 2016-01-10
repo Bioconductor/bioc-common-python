@@ -2,6 +2,7 @@ import datetime
 import logging
 import mechanize
 import sys
+import time
 
 log = logging.getLogger("bioconductor.common")
 
@@ -25,10 +26,12 @@ aws_access_key = AWS['access_key']
 aws_secret_key = AWS['secret_key']
 
 
+
 class QueueWatcher:
     seen = []
     conn = None
     queue = None
+    retention_period_in_seconds = 60
 
     def __init__(self, qname):
         self.conn = boto.sqs.connect_to_region(aws_region,
@@ -36,15 +39,28 @@ class QueueWatcher:
             aws_secret_access_key=aws_secret_key)
         self.queue = self.conn.get_queue(qname)
 
+
+    def purge_old_messages(self):
+        new_seen = []
+        current_time = time.time()
+        for item in self.seen:
+            age = current_time - item[1]
+            if age < self.retention_period_in_seconds:
+                new_seen.append(item)
+        self.seen = new_seen
+
     def poll(self):
         m = self.queue.read()
         if m is None:
             return(None)
-        if m.id in self.seen:
-            return(None)
-        else:
-            self.seen.append(m.id)
-            return(m.get_body())
+        self.purge_old_messages()
+        current_time = time.time()
+        tuple = (m.id, current_time,)
+        for i in self.seen:
+            if i[0] == m.id:
+                return(None)
+        self.seen.append(tuple)
+        return(m.get_body())
 
 class MessageSender:
 
@@ -57,7 +73,6 @@ class MessageSender:
             aws_secret_access_key=aws_secret_key)
         self.queue = self.conn.get_queue(qname)
 
-    # use different queues?
     def send(self, body):
         m = Message()
         m.set_body(body)
