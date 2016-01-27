@@ -1,0 +1,14 @@
+# This configuration is only meant to do some 
+# linting of the code.  It's based in part, on
+# this blog: http://cramer.io/2012/05/03/using-travis-ci/
+language: python
+python: 
+  - "2.7"
+before_install:
+  - pip install pyflakes
+  - pyflakes bioconductor/*.py
+script:
+  - python -c 'print "Finished static analysis"'
+notifications:
+  email:
+    - dtenenba@fredhutch.org
