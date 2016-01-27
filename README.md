@@ -1,5 +1,7 @@
 # bioc-common-python
 
+[![Build Status](https://travis-ci.org/Bioconductor/bioc-common-python.svg?branch=master)](https://travis-ci.org/Bioconductor/bioc-common-python)
+
 Purpose
 -------
 This module provides common functionality to other Bioconductor python applications, such as 
