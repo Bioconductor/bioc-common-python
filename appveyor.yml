@@ -1,0 +1,20 @@
+build: false
+branches:
+  only:
+    - master
+    - feature/use-sqs
+environment:
+  matrix:
+    - PYTHON: "C:/Python27"
+init:
+  - "ECHO %PYTHON%"
+  - ps: "ls C:/Python*"
+install:
+  - "%PYTHON%/Scripts/pip.exe install pyflakes --no-use-wheel"
+# TODO: Lint files dynamically, rather than entering each individually
+test_script:
+  - "set path=%PYTHON%/Scripts;%path%"
+  - "%PYTHON%/python.exe --version"
+  - "%PYTHON%/Scripts/pip.exe --version"
+  - "pyflakes bioconductor/config.py"
+  - "pyflakes bioconductor/communication.py"
