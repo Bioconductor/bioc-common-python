@@ -1,6 +1,7 @@
 # A simple configuration module to reduce duplication.
 
 import os
+import os.path
 import platform
 import logging
 import ConfigParser
@@ -26,13 +27,16 @@ if not readFile(GLOBAL_PROPERTIES_FILE):
     "Can not continue.".format(filename = GLOBAL_PROPERTIES_FILE)
     log.error(errMsg)
     raise Exception(errMsg)
-    
+
 # Parse and read the file
 globalConfigParser = ConfigParser.RawConfigParser()
 globalConfigParser.read(GLOBAL_PROPERTIES_FILE)
 
 CONFIG_ENVIRONMENT = globalConfigParser.get('Environment', 'environment');
 ENVIRONMENT_PROPERTIES_FILE = os.path.join(os.getcwd(), CONFIG_ENVIRONMENT + P_EXTENSION)
+# git clone https://github.com/Bioconductor/spb-properties in current directory
+# (that's a private repo to hold sensitive info)
+SENSITIVE_PROPERTIES_FILE = os.path.join(os.getcwd(), "spb-properties", "spb" + P_EXTENSION)
 
 if not readFile(ENVIRONMENT_PROPERTIES_FILE):
     errMsg = "A properties file '{filename}' is required to configure the environment.  "\
@@ -46,8 +50,11 @@ log.info("Environment is set to: '{env}'.".format(env = CONFIG_ENVIRONMENT))
 envSpecificConfigParser = ConfigParser.RawConfigParser()
 envSpecificConfigParser.read(ENVIRONMENT_PROPERTIES_FILE)
 
+sensitiveConfigParser = ConfigParser.RawConfigParser()
+sensitiveConfigParser.read(SENSITIVE_PROPERTIES_FILE)
+
 # FIXME: Rather than attempting to read the same properties in any environment,
-#           it'd be much better if the config module's constructor (or factory) 
+#           it'd be much better if the config module's constructor (or factory)
 #           offered a callback mechanism, to load the properties file and then
 #           dispatch to environment specific functionality.
 
@@ -77,21 +84,30 @@ BIOC_R_MAP = {"2.7": "2.12", "2.8": "2.13", "2.9": "2.14",
 BUILDER_ID = platform.node().lower().replace(".fhcrc.org","")
 BUILDER_ID = BUILDER_ID.replace(".local", "")
 
+HOST_SPECIFIC_PROPERTIES_FILE = os.path.join(os.getcwd(), BUILDER_ID + P_EXTENSION)
+if (os.path.exists(HOST_SPECIFIC_PROPERTIES_FILE)):
+    hostSpecificConfigParser = ConfigParser.RawConfigParser()
+    hostSpecificConfigParser.read(HOST_SPECIFIC_PROPERTIES_FILE)
+else:
+    hostSpecificConfigParser = envSpecificConfigParser
+
+
+
 ENVIR = {
-    'bbs_home': envSpecificConfigParser.get('Properties', 'bbs.home'),
-    'bbs_R_home': envSpecificConfigParser.get('Properties', 'bbs.r.home'),
+    'bbs_home': hostSpecificConfigParser.get('Properties', 'bbs.home'),
+    'bbs_R_home': hostSpecificConfigParser.get('Properties', 'bbs.r.home'),
     'bbs_node_hostname': BUILDER_ID,
-    'bbs_R_cmd': envSpecificConfigParser.get('Properties', 'bbs.r.cmd'),
+    'bbs_R_cmd': hostSpecificConfigParser.get('Properties', 'bbs.r.cmd'),
     'bbs_Bioc_version': BIOC_VERSION,
 
-    'packagebuilder_home': envSpecificConfigParser.get('Properties', 'packagebuilder.home'),
+    'packagebuilder_home': hostSpecificConfigParser.get('Properties', 'packagebuilder.home'),
 
-    'bbs_RSA_key': envSpecificConfigParser.get('Properties', 'bbs.rsa.key'),
-    'packagebuilder_RSA_key': envSpecificConfigParser.get('Properties', 'spb.rsa.key'),
-    'svn_user': envSpecificConfigParser.get('Properties', 'svn.user'),
-    'svn_pass': envSpecificConfigParser.get('Properties', 'svn.user'),
-    'tracker_user': envSpecificConfigParser.get('Properties', 'tracker.user'),
-    'tracker_pass': envSpecificConfigParser.get('Properties', 'tracker.pass')
+    'bbs_RSA_key': hostSpecificConfigParser.get('Properties', 'bbs.rsa.key'),
+    'packagebuilder_RSA_key': hostSpecificConfigParser.get('Properties', 'spb.rsa.key'),
+    'svn_user': sensitiveConfigParser.get('Sensitive', 'svn.user'),
+    'svn_pass': sensitiveConfigParser.get('Sensitive', 'svn.user'),
+    'tracker_user': sensitiveConfigParser.get('Sensitive', 'tracker.user'),
+    'tracker_pass': sensitiveConfigParser.get('Sensitive', 'tracker.pass')
 }
 
 TOPICS = {
