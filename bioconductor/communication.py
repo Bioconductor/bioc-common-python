@@ -1,7 +1,4 @@
-import datetime
 import logging
-import mechanize
-import sys
 
 log = logging.getLogger("bioconductor.common")
 
