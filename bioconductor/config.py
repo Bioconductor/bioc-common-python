@@ -74,6 +74,13 @@ if envSpecificConfigParser.has_option('Properties', 'activemq.password'):
 else:
     ACTIVEMQ_PASS = None
 
+if envSpecificConfigParser.has_option('Properties', 'github.issue.tracker.repo'):
+    GITHUB_ISSUE_TRACKER_REPO = envSpecificConfigParser.get('Properties',
+      'github.issue.tracker.repo')
+else:
+    GITHUB_ISSUE_TRACKER_REPO = None     
+
+
 BIOC_VERSION = globalConfigParser.get('UniversalProperties', 'bbs.bioc.version')
 
 # TODO: Consider a better way to determine this
