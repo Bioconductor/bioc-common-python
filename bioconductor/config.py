@@ -78,7 +78,7 @@ if envSpecificConfigParser.has_option('Properties', 'github.issue.tracker.repo')
     GITHUB_ISSUE_TRACKER_REPO = envSpecificConfigParser.get('Properties',
       'github.issue.tracker.repo')
 else:
-    GITHUB_ISSUE_TRACKER_REPO = None     
+    GITHUB_ISSUE_TRACKER_REPO = None
 
 
 BIOC_VERSION = globalConfigParser.get('UniversalProperties', 'bbs.bioc.version')
@@ -86,7 +86,8 @@ BIOC_VERSION = globalConfigParser.get('UniversalProperties', 'bbs.bioc.version')
 # TODO: Consider a better way to determine this
 BIOC_R_MAP = {"2.7": "2.12", "2.8": "2.13", "2.9": "2.14",
     "2.10": "2.15", "2.14": "3.1", "3.0": "3.1",
-    "3.1": "3.2", "3.2": "3.2", "3.3": "3.3"}
+    "3.1": "3.2", "3.2": "3.2", "3.3": "3.3",
+    "3.4": "3.3", "3.5": "3.4", "3.6": "3.4"}
 
 BUILDER_ID = platform.node().lower().replace(".fhcrc.org","")
 BUILDER_ID = BUILDER_ID.replace(".local", "")
