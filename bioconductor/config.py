@@ -101,7 +101,8 @@ ENVIR = {
     'bbs_central_rhost': envConfig.get('Properties','bbs.central.rhost'),
     'bbs_central_ruser': envConfig.get('Properties','bbs.central.ruser'),
     'spb_home': envConfig.get('Properties', 'spb.home'),
-    'spb_RSA_key': envConfig.get('Properties', 'spb.rsa.key')
+    'spb_RSA_key': envConfig.get('Properties', 'spb.rsa.key'),
+    'packagebuilder_home': envConfig.get('Properties', 'packagebuilder.home')
 
 # eventually reinitialize using a Sensitive File
 #    'svn_user': envConfig.get('Properties', 'svn.user'),
