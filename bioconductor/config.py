@@ -32,8 +32,8 @@ if not readFile(GLOBAL_PROPERTIES_FILE):
 globalConfigParser = ConfigParser.RawConfigParser()
 globalConfigParser.read(GLOBAL_PROPERTIES_FILE)
 
-CONFIG_ENVIRONMENT = globalConfigParser.get('Environment', 'environment');
-ENVIRONMENT_PROPERTIES_FILE = os.path.join(os.getcwd(), CONFIG_ENVIRONMENT + P_EXTENSION)
+environment = globalConfigParser.get('Environment', 'environment')
+ENVIRONMENT_PROPERTIES_FILE = os.path.join(os.getcwd(), environment + P_EXTENSION)
 # git clone https://github.com/Bioconductor/spb-properties in current directory
 # (that's a private repo to hold sensitive info)
 SENSITIVE_PROPERTIES_FILE = os.path.join(os.getcwd(), "spb-properties", "spb" + P_EXTENSION)
@@ -44,7 +44,7 @@ if not readFile(ENVIRONMENT_PROPERTIES_FILE):
     log.error(errMsg)
     raise Exception(errMsg)
 
-log.info("Environment is set to: '{env}'.".format(env = CONFIG_ENVIRONMENT))
+log.info("Environment is set to: '{env}'.".format(env = environment))
 
 # Parse and read the environment specific configuration
 envConfig = ConfigParser.RawConfigParser()
@@ -73,9 +73,6 @@ if envConfig.has_option('Properties', 'activemq.password'):
     ACTIVEMQ_PASS = envConfig.get('Properties', 'activemq.password')
 else:
     ACTIVEMQ_PASS = None
-
-GITHUB_ISSUE_TRACKER_REPO = envConfig.get('Properties',
-                                          'github.issue.tracker.repo')
 
 BIOC_VERSION = globalConfigParser.get('UniversalProperties', 'bbs.bioc.version')
 
@@ -108,6 +105,9 @@ ENVIR = {
 
     'spb_RSA_key': envConfig.get('Properties', 'spb.rsa.key'),
     'spb_home': envConfig.get('Properties', 'spb.home'),
+    'spb_staging_url': envConfig.get('Properties', 'spb.staging.url'),
+
+    'github_issue_repo': envConfig.get('Properties', 'github.issue.repo'),
 
     'svn_pass': sensitiveConfigParser.get('Sensitive', 'svn.user'),
     'svn_user': sensitiveConfigParser.get('Sensitive', 'svn.user'),
