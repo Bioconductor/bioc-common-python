@@ -1,6 +1,7 @@
 # A simple configuration module to reduce duplication.
 
 import os
+import os.path
 import platform
 import logging
 import ConfigParser
@@ -33,6 +34,9 @@ globalConfigParser.read(GLOBAL_PROPERTIES_FILE)
 
 CONFIG_ENVIRONMENT = globalConfigParser.get('Environment', 'environment');
 ENVIRONMENT_PROPERTIES_FILE = os.path.join(os.getcwd(), CONFIG_ENVIRONMENT + P_EXTENSION)
+# git clone https://github.com/Bioconductor/spb-properties in current directory
+# (that's a private repo to hold sensitive info)
+SENSITIVE_PROPERTIES_FILE = os.path.join(os.getcwd(), "spb-properties", "spb" + P_EXTENSION)
 
 if not readFile(ENVIRONMENT_PROPERTIES_FILE):
     errMsg = "A properties file '{filename}' is required to configure the environment.  "\
@@ -45,6 +49,9 @@ log.info("Environment is set to: '{env}'.".format(env = CONFIG_ENVIRONMENT))
 # Parse and read the environment specific configuration
 envConfig = ConfigParser.RawConfigParser()
 envConfig.read(ENVIRONMENT_PROPERTIES_FILE)
+
+sensitiveConfigParser = ConfigParser.RawConfigParser()
+sensitiveConfigParser.read(SENSITIVE_PROPERTIES_FILE)
 
 # FIXME: Rather than attempting to read the same properties in any environment,
 #           it'd be much better if the config module's constructor (or factory)
@@ -67,47 +74,44 @@ if envConfig.has_option('Properties', 'activemq.password'):
 else:
     ACTIVEMQ_PASS = None
 
-# follow from packagebuilder/bioconductor.properties
+GITHUB_ISSUE_TRACKER_REPO = envConfig.get('Properties',
+                                          'github.issue.tracker.repo')
+
 BIOC_VERSION = globalConfigParser.get('UniversalProperties', 'bbs.bioc.version')
 
 # TODO: Consider a better way to determine this
-BIOC_R_MAP = {
-    "2.7": "2.12", "2.8": "2.13", "2.9": "2.14", "2.10": "2.15",
-    "2.14": "3.1", "3.0": "3.1", "3.1": "3.2", "3.2": "3.2",
-    "3.3": "3.3", "3.4": "3.3"
-}
+BIOC_R_MAP = {"2.7": "2.12", "2.8": "2.13", "2.9": "2.14",
+    "2.10": "2.15", "2.14": "3.1", "3.0": "3.1",
+    "3.1": "3.2", "3.2": "3.2", "3.3": "3.3",
+    "3.4": "3.3", "3.5": "3.4", "3.6": "3.4"}
 
 BUILDER_ID = platform.node().lower().replace(".fhcrc.org","")
 BUILDER_ID = BUILDER_ID.replace(".local", "")
 
-if envConfig.has_option('Properties', 'bbs.home'):
-    BBS_HOME = envConfig.get('Properties', 'bbs.home')
-else:
-    BBS_HOME =  "/home/biocbuild/BBS"
+BBS_HOME = envConfig.get('Properties', 'bbs.home')
 
 ENVIR = {
-    'bbs_home': BBS_HOME,
-    'bbs_R_home': envConfig.get('Properties', 'bbs.r.home'),
-    'bbs_R_cmd': envConfig.get('Properties', 'bbs.r.home') + "bin/R",
-    'bbs_node_hostname': BUILDER_ID,
     'bbs_Bioc_version': BIOC_VERSION,
     'bbs_RSA_key': envConfig.get('Properties', 'bbs.rsa.key'),
-    'bbs_rsync_cmd': envConfig.get('Properties','bbs.rsync.cmd'),
+    'bbs_R_cmd': envConfig.get('Properties', 'bbs.r.home') + "bin/R",
+    'bbs_R_home': envConfig.get('Properties', 'bbs.r.home'),
+    'bbs_central_rhost': envConfig.get('Properties','bbs.central.rhost'),
+    'bbs_central_ruser': envConfig.get('Properties','bbs.central.ruser'),
+    'bbs_home': BBS_HOME,
+    'bbs_mode': envConfig.get('Properties','bbs.mode'),
+    'bbs_node_hostname': BUILDER_ID,
     'bbs_python_cmd': envConfig.get('Properties','bbs.python.cmd'),
+    'bbs_rsync_cmd': envConfig.get('Properties','bbs.rsync.cmd'),
     'bbs_ssh_cmd': envConfig.get('Properties','bbs.ssh.cmd'),
     'bbs_svn_cmd': envConfig.get('Properties','bbs.svn.cmd'),
     'bbs_tar_cmd': envConfig.get('Properties','bbs.tar.cmd'),
-    'bbs_mode': envConfig.get('Properties','bbs.mode'),
-    'bbs_central_rhost': envConfig.get('Properties','bbs.central.rhost'),
-    'bbs_central_ruser': envConfig.get('Properties','bbs.central.ruser'),
-    'spb_home': envConfig.get('Properties', 'spb.home'),
+    'packagebuilder_home': envConfig.get('Properties', 'packagebuilder.home'),
     'spb_RSA_key': envConfig.get('Properties', 'spb.rsa.key'),
-    'packagebuilder_home': envConfig.get('Properties', 'packagebuilder.home')
+    'spb_home': envConfig.get('Properties', 'spb.home'),
 
-# eventually reinitialize using a Sensitive File
-#    'svn_user': envConfig.get('Properties', 'svn.user'),
-#    'svn_pass': envConfig.get('Properties', 'svn.pass'),
-
+    'svn_pass': sensitiveConfigParser.get('Sensitive', 'svn.user'),
+    'svn_user': sensitiveConfigParser.get('Sensitive', 'svn.user'),
+    'github_token': sensitiveConfigParser.get('Sensitive', 'github.token')
 }
 
 TOPICS = {
