@@ -102,6 +102,8 @@ ENVIR = {
     'bbs_ssh_cmd': envConfig.get('Properties','bbs.ssh.cmd'),
     'bbs_svn_cmd': envConfig.get('Properties','bbs.svn.cmd'),
     'bbs_tar_cmd': envConfig.get('Properties','bbs.tar.cmd'),
+    'bbs_curl_cmd': envConfig.get('Properties','bbs.curl.cmd'),
+    'bbs_lang': envConfig.get('Properties','bbs.lang'),
 
     'spb_RSA_key': envConfig.get('Properties', 'spb.rsa.key'),
     'spb_home': envConfig.get('Properties', 'spb.home'),
