@@ -9,6 +9,3 @@ before_install:
   - pyflakes bioconductor/*.py
 script:
   - python -c 'print "Finished static analysis"'
-notifications:
-  email:
-    - dtenenba@fredhutch.org
