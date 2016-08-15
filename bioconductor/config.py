@@ -59,7 +59,7 @@ sensitiveConfigParser.read(SENSITIVE_PROPERTIES_FILE)
 #           dispatch to environment specific functionality.
 
 # Only used in the packagebuilder for now (we need to adjust it's properties)
-BUILD_NODES = envConfig.get('Properties', 'builders').split(",")
+BUILD_NODES = envConfig.get('Properties', 'builders').lower().split(",")
 BROKER = {
     "host": envConfig.get('Properties', 'stomp.host'),
     "port": int(envConfig.get('Properties', 'stomp.port'))
