@@ -110,6 +110,7 @@ ENVIR = {
     'spb_staging_url': envConfig.get('Properties', 'spb.staging.url'),
 
     'github_issue_repo': envConfig.get('Properties', 'github.issue.repo'),
+    'log_level': envConfig.get('Properties', 'log.level'),
 
     'svn_pass': sensitiveConfigParser.get('Sensitive', 'svn.user'),
     'svn_user': sensitiveConfigParser.get('Sensitive', 'svn.user'),
