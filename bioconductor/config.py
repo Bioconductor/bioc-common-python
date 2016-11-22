@@ -114,7 +114,8 @@ ENVIR = {
 
     'svn_pass': sensitiveConfigParser.get('Sensitive', 'svn.user'),
     'svn_user': sensitiveConfigParser.get('Sensitive', 'svn.user'),
-    'github_token': sensitiveConfigParser.get('Sensitive', 'github.token')
+    'github_token': sensitiveConfigParser.get('Sensitive', 'github.token'),
+    'bioc_devel_password': sensitiveConfigParser.get('Sensitive', 'bioc.devel.password')
 }
 
 TOPICS = {
