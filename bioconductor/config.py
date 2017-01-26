@@ -111,6 +111,7 @@ ENVIR = {
 
     'github_issue_repo': envConfig.get('Properties', 'github.issue.repo'),
     'log_level': envConfig.get('Properties', 'log.level'),
+    'timeout_limit': envConfig.get('Properties', 'timeout.limit'),
 
     'svn_pass': sensitiveConfigParser.get('Sensitive', 'svn.user'),
     'svn_user': sensitiveConfigParser.get('Sensitive', 'svn.user'),
