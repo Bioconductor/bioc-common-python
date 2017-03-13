@@ -84,6 +84,7 @@ BIOC_R_MAP = {"2.7": "2.12", "2.8": "2.13", "2.9": "2.14",
 
 BUILDER_ID = platform.node().lower().replace(".fhcrc.org","")
 BUILDER_ID = BUILDER_ID.replace(".local", "")
+BUILDER_ID = BUILDER_ID.replace(".bioconductor.org", "")
 
 BBS_HOME = envConfig.get('Properties', 'bbs.home')
 
