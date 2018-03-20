@@ -111,6 +111,9 @@ ENVIR = {
     'spb_staging_url': envConfig.get('Properties', 'spb.staging.url'),
 
     'github_issue_repo': envConfig.get('Properties', 'github.issue.repo'),
+
+    'length1_condition': envConfig.get('Properties', 'length1.condition'),
+
     'log_level': envConfig.get('Properties', 'log.level'),
     'log_level_builder': envConfig.get('Properties', 'log.level.builder'),
     'log_level_server': envConfig.get('Properties', 'log.level.server'),
