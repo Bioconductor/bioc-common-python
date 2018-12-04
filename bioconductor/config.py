@@ -113,7 +113,7 @@ ENVIR = {
 
     'github_issue_repo': envConfig.get('Properties', 'github.issue.repo'),
 
-    'length1_condition': envConfig.get('Properties', 'length1.condition'),
+    'r_check_environ': envConfig.get('Properties', 'r.check.environ'),
 
     'log_level': envConfig.get('Properties', 'log.level'),
     'log_level_builder': envConfig.get('Properties', 'log.level.builder'),
