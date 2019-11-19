@@ -7,7 +7,7 @@ enum34==1.1.6
 funcsigs==0.4
 idna==2.0
 ipaddress==1.0.15
-mechanize==0.2.5
+mechanize==0.4.4
 mock==1.3.0
 pbr==1.8.1
 pyasn1==0.1.9
