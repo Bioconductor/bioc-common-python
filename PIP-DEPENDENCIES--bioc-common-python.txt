@@ -1,11 +1,11 @@
 backports-abc==0.4
 backports.ssl-match-hostname==3.4.0.2
-certifi==2015.11.20.1
+certifi==2017.4.17
 cffi==1.8.2
 cryptography==2.8
 enum34==1.1.6
 funcsigs==0.4
-idna==2.0
+idna==2.5
 ipaddress==1.0.15
 mechanize==0.4.4
 mock==1.3.0
