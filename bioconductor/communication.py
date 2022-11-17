@@ -21,7 +21,6 @@ def getNewStompConnection(listenerName, listenerObject):
         stompClient = stomp.Connection([(stompHost, stompPort)])
 
         stompClient.set_listener(listenerName, listenerObject)
-        stompClient.start()
 
 
         stompClient.connect()

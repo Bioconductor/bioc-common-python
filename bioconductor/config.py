@@ -4,7 +4,7 @@ import os
 import os.path
 import platform
 import logging
-import ConfigParser
+import configparser
 
 # log.basicConfig(format='%(levelname)s: %(asctime)s %(filename)s - %(message)s',
 #                     datefmt='%m/%d/%Y %I:%M:%S %p',
@@ -29,7 +29,7 @@ if not readFile(GLOBAL_PROPERTIES_FILE):
     raise Exception(errMsg)
 
 # Parse and read the file
-globalConfigParser = ConfigParser.RawConfigParser()
+globalConfigParser = configparser.RawConfigParser()
 globalConfigParser.read(GLOBAL_PROPERTIES_FILE)
 
 environment = globalConfigParser.get('Environment', 'environment')
@@ -47,10 +47,10 @@ if not readFile(ENVIRONMENT_PROPERTIES_FILE):
 log.info("Environment is set to: '{env}'.".format(env = environment))
 
 # Parse and read the environment specific configuration
-envConfig = ConfigParser.RawConfigParser()
+envConfig = configparser.RawConfigParser()
 envConfig.read(ENVIRONMENT_PROPERTIES_FILE)
 
-sensitiveConfigParser = ConfigParser.RawConfigParser()
+sensitiveConfigParser = configparser.RawConfigParser()
 sensitiveConfigParser.read(SENSITIVE_PROPERTIES_FILE)
 
 # FIXME: Rather than attempting to read the same properties in any environment,
@@ -82,7 +82,9 @@ BIOC_R_MAP = {"2.7": "2.12", "2.8": "2.13", "2.9": "2.14",
               "3.1": "3.2", "3.2": "3.2", "3.3": "3.3",
               "3.4": "3.3", "3.5": "3.4", "3.6": "3.4",
               "3.7": "3.5", "3.8": "3.5", "3.9": "3.6",
-              "3.10": "3.6", "3.11": "4.0", "3.12": "4.0"}
+              "3.10": "3.6", "3.11": "4.0", "3.12": "4.0",
+              "3.13": "4.1", "3.14": "4.1", "3.15": "4.2",
+              "3.16": "4.2", "3.17": "4.3"}
 
 BUILDER_ID = platform.node().lower().replace(".fhcrc.org","")
 BUILDER_ID = BUILDER_ID.replace(".local", "")
