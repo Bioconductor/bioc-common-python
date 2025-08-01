@@ -18,12 +18,16 @@ def getNewStompConnection(listenerName, listenerObject):
     try:
         log.debug("Attempting to open connection to broker at '%s:%s'.",
             stompHost, stompPort)
-        stompClient = stomp.Connection([(stompHost, stompPort)])
+        #stompClient = stomp.Connection([(stompHost, stompPort)])
+        stompClient = stomp.Connection(
+            [(stompHost, stompPort)],
+            heartbeats=(60000, 60000),  # (client, server) ms
+            reconnect_attempts_max=3
+        )
 
         stompClient.set_listener(listenerName, listenerObject)
 
-
-        stompClient.connect()
+        stompClient.connect(wait=True)
         log.debug("Stomp connection established.")
     except:
         log.error("Cannot connect to Stomp at '%s:%s'.", stompHost, stompPort)
